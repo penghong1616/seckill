@@ -44,10 +44,10 @@
                 <span th:if="${status} ==2">秒杀已结束</span>
             </td>
             <td>
-                <form action="/secKill" method="post">
+<!--                <form action="/secKill" method="post">-->
                     <input type="hidden" name="goodsId"  id="goodsId" th:value="${goods.id}" />
-<!--                    <button class="btn btn-primary btn-block" type="button" id="buyButton" onclick="doSeckill()">立即秒杀</button>-->
-                    <button class="btn btn-primary btn-block" type="submit" id="buyButton">立即秒杀</button>
+                    <button class="btn btn-primary btn-block" type="button" id="buyButton" onclick="doSeckill()">立即秒杀</button>
+<!--                    <button class="btn btn-primary btn-block" type="submit" id="buyButton">立即秒杀</button>-->
                 </form>
             </td>
         </tr>
@@ -67,6 +67,57 @@
 </div>
 </body>
 <script>
+    function getSecKillResult(goodsId){
+        g_showLoading();
+        $.ajax({
+            url:"/secKill/result",
+            type:"GET",
+            data:{
+                goodsId:$("#goodsId").val(),
+            },
+            success:function(data){
+                if (data.code==0){
+                    var result=data.data;
+                    if (result<0){
+                        layer.msg("库存不足，秒杀失败");
+                    } else if (result==0){
+                        setTimeout(function () {
+                            getSecKillResult(goodsId)
+                        },50);
+                    } else{
+                        layer.confirm("秒杀成功，是否查看订单?",{btn:["确定","取消"]},function () {
+                            window.location.href="/order/detail?orderId="+result;
+                        },function () {
+                            layer.closeAll();
+                        });
+                    }
+                }else{
+                    layer.msg("客户端请求有误");
+                }
+            },
+        });
+    }
+    function doSeckill(){
+        $.ajax({
+            url:"/secKill/secKill",
+            type:"POST",
+            data:{
+                goodsId:$("#goodsId").val(),
+            },
+            success:function (data) {
+                if (data.code==0){
+                    //window.location.href="/order/detail?orderId="+data.data.id;
+                    getSecKillResult($("#goodsId").val());
+
+                } else{
+                    layer.msg(data.msg);
+                }
+            },
+            error:function () {
+                layer.msg("客户端请求有误");
+            }
+        });
+    }
     $(function () {
         countDown();
     });

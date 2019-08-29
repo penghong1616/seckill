@@ -28,9 +28,9 @@ public class OrderController {
     SecKillService secKillService;
     @RequestMapping("/detail")
     @ResponseBody
-    public Result<GoodsOrderVo> detail(Model model, User user,  Long goodsId){
-        OrderInfo orderInfo=orderService.getOrderInfoByUserIdAndGoodsId(user.getId(),goodsId);
-        Goods goods=goodsService.getGoodsVoByGoodsId(goodsId);
+    public Result<GoodsOrderVo> detail(Model model, Long id){
+        OrderInfo orderInfo=orderService.getOrderInfoByOrderId(id);
+        Goods goods=goodsService.getGoodsVoByGoodsId(id);
         GoodsOrderVo goodsOrderVo=new GoodsOrderVo();
         goodsOrderVo.setGoods(goods);
         goodsOrderVo.setOrderInfo(orderInfo);

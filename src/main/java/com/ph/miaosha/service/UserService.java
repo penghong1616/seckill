@@ -66,7 +66,7 @@ public class UserService {
             throw new GlobalException(CodeMsg.MOBILE_NOT_EXT);
         String dbPass=user.getPassword();
         String saltDB=user.getSalt();
-        String calcPass= MD5Util.fromPassToDBPass(password,saltDB);
+        String calcPass= MD5Util.inputPassToDBPass(password,saltDB);
         if (!calcPass.equals(dbPass)){
             throw new GlobalException(CodeMsg.PASSWORD_ERROR);
         }

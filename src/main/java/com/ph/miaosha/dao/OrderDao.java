@@ -14,6 +14,8 @@ public interface OrderDao {
     public long insert(OrderInfo orderInfo);
     @Insert("insert into sk_order(user_id,goods_id,order_id) values(#{userId},#{goodsId},#{orderId})")
     void insertSecKillOrder(SecKillOrder secKillOrder);
-    @Select("select * from sk_order_info where user_id=#{userId} and goods_Id=#{goodsId}")
+    @Select("select * from sk_order where user_id=#{userId} and goods_Id=#{goodsId}")
     public OrderInfo getOrderInfoByUserIdAndGoodsId(Long userId, Long goodsId);
+    @Select("select * from sk_order_info where id=#{id}")
+    public OrderInfo getOrderInfoByOrderId(Long id);
 }

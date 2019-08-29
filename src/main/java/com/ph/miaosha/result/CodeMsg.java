@@ -16,7 +16,7 @@ public class CodeMsg {
     //登录模块
     //秒杀模块5005XX
     public static CodeMsg  SRC_KILL_OVER=new CodeMsg(500500,"商品秒杀完毕");
-    public static CodeMsg REPEATE_SERCKILL=new CodeMsg(500501,"不能重复秒杀");
+    public static CodeMsg SUCCESS_SERCKILL=new CodeMsg(500501,"你已经秒杀成功");
     private CodeMsg(int code, String msg) {
         this.code=code;
         this.msg=msg;
