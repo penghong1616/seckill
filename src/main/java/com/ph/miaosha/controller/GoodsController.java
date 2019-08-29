@@ -1,5 +1,7 @@
 package com.ph.miaosha.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ph.miaosha.domain.User;
 import com.ph.miaosha.redis.GoodsKey;
 import com.ph.miaosha.redis.RedisService;
@@ -32,10 +34,15 @@ public class GoodsController {
     @Autowired
     GoodsService goodsService;
     @RequestMapping(value = "/to_list")
-    public String toList(Model model, User user){
+    public String toList(Model model, User user,@RequestParam(value = "pageNum",defaultValue ="0") String pageNum,
+                         @RequestParam(value = "pageSize",defaultValue = "2" )String pageSize) {
+
         model.addAttribute("user",user);
+        PageHelper.startPage(Integer.parseInt(pageNum),Integer.parseInt(pageSize));
         List<GoodsVo> goodsList=goodsService.listGoods();
+        PageInfo pageInfo=new PageInfo(goodsList);
         model.addAttribute("goodsList",goodsList);
+        model.addAttribute("pageInfo",pageInfo);
         return "goods_list";
     }
     @RequestMapping(value = "/to_detail/{goodsId}")
